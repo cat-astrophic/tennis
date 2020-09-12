@@ -40,7 +40,7 @@ mod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings) + log(Winnings_20 + 
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 mod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings) + log(Winnings_20 + 1) + Doubles + COVID + Suspension
-            + Ranking_S + Titles + Majors + US_Open, family = binomial(link = logit), data = data)
+            + Injury + Ranking_S + Titles + Majors + US_Open, family = binomial(link = logit), data = data)
 
 # Running the (logit) models for singles players only
 
@@ -71,7 +71,7 @@ smod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings) + log(Winnings_20 +
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 smod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings) + log(Winnings_20 + 1) + Doubles + COVID + Suspension
-             + Ranking_S + Titles + Majors + US_Open, family = binomial(link = logit), data = sdata)
+             + Injury + Ranking_S + Titles + Majors + US_Open, family = binomial(link = logit), data = sdata)
 
 # Running the (logit) models for singles players who were not 'substitutes' only
 
@@ -102,7 +102,7 @@ submod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings) + log(Winnings_20
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 submod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings) + log(Winnings_20 + 1) + Doubles + COVID + Suspension
-             + Ranking_S + Titles + Majors + US_Open, family = binomial(link = logit), data = subdata)
+               + Injury + Ranking_S + Titles + Majors + US_Open, family = binomial(link = logit), data = subdata)
 
 # Generating  heteroskedasticity robust standard errors
 
