@@ -1,11 +1,17 @@
 # Main script for a paper on athletes, gender, and risk
 
+# Specifying the directory for the data  -- ensure that the directory is correct
+
+directory <- 'C:/Users/User/Documents/Data/tennis/'
+
 # Running the three scripts -- ensure that the directory is correct
 
-directory <- 'C:/Users/User/Documents/'
+diRectoRy <- 'C:/Users/User/Documents/'
 
-source(paste(directory, 'us_open.R', sep = ''))
-source(paste(directory, 'italian_open.R', sep = ''))
-source(paste(directory, 'french_open.R', sep = ''))
-source(paste(directory, 'full_season.R', sep = ''))
+# Running the R scripts
+
+source(paste(diRectoRy, 'us_open.R', sep = ''))
+source(paste(diRectoRy, 'italian_open.R', sep = ''))
+source(paste(diRectoRy, 'french_open.R', sep = ''))
+source(paste(diRectoRy, 'full_season.R', sep = ''))
 
