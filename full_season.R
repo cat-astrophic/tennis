@@ -71,18 +71,18 @@ mod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_2
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 mod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors + Current + Event.Type, family = binomial(link = logit), data = data)
+            + Titles + Majors + Current + factor(Event.Type), family = binomial(link = logit), data = data)
 
 # Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
 
 mod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors_Bi + Current + Event.Type, family = binomial(link = logit), data = data)
+            + Titles + Majors_Bi + Current + factor(Event.Type), family = binomial(link = logit), data = data)
 
 mod8 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors + Current_Bi + Event.Type, family = binomial(link = logit), data = data)
+            + Titles + Majors + Current_Bi + factor(Event.Type), family = binomial(link = logit), data = data)
 
 mod9 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors_Bi + Current_Bi + Event.Type, family = binomial(link = logit), data = data)
+            + Titles + Majors_Bi + Current_Bi + factor(Event.Type), family = binomial(link = logit), data = data)
 
 # Running the (logit) models for singles players who were not 'substitutes' only
 
@@ -113,18 +113,18 @@ submod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winning
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 submod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors + Current + Event.Type, family = binomial(link = logit), data = subdata)
+               + Titles + Majors + Current + factor(Event.Type), family = binomial(link = logit), data = subdata)
 
 # Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
 
 submod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors_Bi + Current + Event.Type, family = binomial(link = logit), data = subdata)
+               + Titles + Majors_Bi + Current + factor(Event.Type), family = binomial(link = logit), data = subdata)
 
 submod8 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors + Current_Bi + Event.Type, family = binomial(link = logit), data = subdata)
+               + Titles + Majors + Current_Bi + factor(Event.Type), family = binomial(link = logit), data = subdata)
 
 submod9 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors_Bi + Current_Bi + Event.Type, family = binomial(link = logit), data = subdata)
+               + Titles + Majors_Bi + Current_Bi + factor(Event.Type), family = binomial(link = logit), data = subdata)
 
 # Generating  heteroskedasticity robust standard errors
 
