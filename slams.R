@@ -67,7 +67,7 @@ mod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_2
 mod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
             + Titles + Majors + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
-# Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
+# Models 7-9 are Model 6 with alternative specifications for Majors and Current to serve as robustness checks
 
 mod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
             + Titles + Majors_Bi + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
@@ -109,7 +109,7 @@ submod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winning
 submod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                + Titles + Majors + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
-# Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
+# Models 7-9 are Model 6 with alternative specifications for Majors and Current to serve as robustness checks
 
 submod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                + Titles + Majors_Bi + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
