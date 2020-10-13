@@ -65,18 +65,18 @@ mod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_2
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 mod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors + Current, family = binomial(link = logit), data = data)
+            + Titles + Majors + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
 # Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
 
 mod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors_Bi + Current, family = binomial(link = logit), data = data)
+            + Titles + Majors_Bi + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
 mod8 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors + Current_Bi, family = binomial(link = logit), data = data)
+            + Titles + Majors + Current_Bi + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
 mod9 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-            + Titles + Majors_Bi + Current_Bi, family = binomial(link = logit), data = data)
+            + Titles + Majors_Bi + Current_Bi + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
 # Running the (logit) models for singles players who were not 'substitutes' only
 
@@ -107,18 +107,18 @@ submod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winning
 # Model 6 is Model 5 + remaining controls + singles ranking
 
 submod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors + Current, family = binomial(link = logit), data = subdata)
+               + Titles + Majors + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
 # Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
 
 submod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors_Bi + Current, family = binomial(link = logit), data = subdata)
+               + Titles + Majors_Bi + Current + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
 submod8 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors + Current_Bi, family = binomial(link = logit), data = subdata)
+               + Titles + Majors + Current_Bi + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
 submod9 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
-               + Titles + Majors_Bi + Current_Bi, family = binomial(link = logit), data = subdata)
+               + Titles + Majors_Bi + Current_Bi + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
 # Generating  heteroskedasticity robust standard errors
 
@@ -178,10 +178,6 @@ subrse9 <- sqrt(diag(cov))
 
 # Viewing regression results and saving to file
 
-stargazer(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9, type = 'text', se = list(rse1, rse2, rse3, rse4, rse5, rse6, rse7, rse8, rse9))
-stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, submod8, submod9, type = 'text',
-          se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7, subrse8, subrse9))
-
 write.csv(stargazer(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9, type = 'text', se = list(rse1, rse2, rse3, rse4, rse5, rse6, rse7, rse8, rse9)),
           paste(directory, 'results_all_slams.txt', sep = ''), row.names = FALSE)
 write.csv(stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, submod8, submod9, type = 'text',
@@ -194,4 +190,8 @@ write.csv(stargazer(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9,
 write.csv(stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, submod8, submod9,
                     se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7, subrse8, subrse9)),
           paste(directory, 'results_lucky_slams_tex.txt', sep = ''), row.names = FALSE)
+
+stargazer(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9, type = 'text', se = list(rse1, rse2, rse3, rse4, rse5, rse6, rse7, rse8, rse9))
+stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, submod8, submod9, type = 'text',
+          se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7, subrse8, subrse9))
 
