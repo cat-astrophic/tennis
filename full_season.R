@@ -40,6 +40,10 @@ french$Tournament <- frt
 
 data <- rbind(us,italian,french)
 
+# Adding an Age^2 variable to the data set
+
+data$Age2 <- data$Age*data$Age
+
 # Dropping individuals who did not choose whether or not to participate, i.e., those who had COVID, an injury, or were suspended
 
 data <- data[which(data$COVID == 0),]
@@ -75,18 +79,18 @@ mod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_2
 
 # Model 6 is Model 5 + remaining controls + singles ranking
 
-mod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod6 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
             + Titles + Majors + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
 # Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
 
-mod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod7 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
             + Titles + Majors_Bi + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
-mod8 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod8 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
             + Titles + Majors + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
-mod9 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod9 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
             + Titles + Majors_Bi + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = data)
 
 # Running the (logit) models for singles players who were not 'substitutes' only
@@ -119,18 +123,18 @@ submod5 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winning
 
 # Model 6 is Model 5 + remaining controls + singles ranking
 
-submod6 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod6 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                + Titles + Majors + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
 # Models 7-9 are Model 6 with alternative specifications for Majors and French_Open to serve as robustness checks
 
-submod7 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod7 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                + Titles + Majors_Bi + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
-submod8 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod8 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                + Titles + Majors + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
-submod9 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod9 <- glm(Competed ~ factor(Gender) + Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                + Titles + Majors_Bi + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdata)
 
 # Generating  heteroskedasticity robust standard errors
@@ -218,16 +222,16 @@ mod4m <- glm(Competed ~ Age + log(Winnings_20 + 1), family = binomial(link = log
 
 mod5m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1), family = binomial(link = logit), data = datam)
 
-mod6m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod6m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = datam)
 
-mod7m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod7m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors_Bi + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = datam)
 
-mod8m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod8m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = datam)
 
-mod9m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod9m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors_Bi + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = datam)
 
 mod2f <- glm(Competed ~ Age, family = binomial(link = logit), data = dataf)
@@ -238,16 +242,16 @@ mod4f <- glm(Competed ~ Age + log(Winnings_20 + 1), family = binomial(link = log
 
 mod5f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1), family = binomial(link = logit), data = dataf)
 
-mod6f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod6f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = dataf)
 
-mod7f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod7f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors_Bi + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = dataf)
 
-mod8f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod8f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = dataf)
 
-mod9f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+mod9f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
              + Titles + Majors_Bi + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = dataf)
 
 submod2m <- glm(Competed ~ Age, family = binomial(link = logit), data = subdatam)
@@ -258,16 +262,16 @@ submod4m <- glm(Competed ~ Age + log(Winnings_20 + 1), family = binomial(link = 
 
 submod5m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1), family = binomial(link = logit), data = subdatam)
 
-submod6m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod6m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdatam)
 
-submod7m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod7m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors_Bi + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdatam)
 
-submod8m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod8m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdatam)
 
-submod9m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod9m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors_Bi + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdatam)
 
 submod2f <- glm(Competed ~ Age, family = binomial(link = logit), data = subdataf)
@@ -278,16 +282,16 @@ submod4f <- glm(Competed ~ Age + log(Winnings_20 + 1), family = binomial(link = 
 
 submod5f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1), family = binomial(link = logit), data = subdataf)
 
-submod6f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod6f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdataf)
 
-submod7f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod7f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors_Bi + Current + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdataf)
 
-submod8f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod8f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdataf)
 
-submod9f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
+submod9f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1) + Doubles + Qualifier + Ranking_S
                 + Titles + Majors_Bi + Current_Bi + factor(Event.Type) + Prev_Tourn_Comp, family = binomial(link = logit), data = subdataf)
 
 # Generating  heteroskedasticity robust standard errors
