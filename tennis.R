@@ -4,7 +4,7 @@
 
 directory <- 'C:/Users/User/Documents/Data/tennis/'
 
-# Running the three scripts -- ensure that the directory is correct
+# Running the individual scripts for each set of analyses -- ensure that the directory is correct
 
 diRectoRy <- 'C:/Users/User/Documents/'
 
