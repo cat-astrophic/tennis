@@ -13,6 +13,6 @@ diRectoRy <- 'C:/Users/User/Documents/'
 source(paste(diRectoRy, 'us_open.R', sep = ''))
 source(paste(diRectoRy, 'italian_open.R', sep = ''))
 source(paste(diRectoRy, 'french_open.R', sep = ''))
-source(paste(diRectoRy, 'full_season.R', sep = ''))
 source(paste(diRectoRy, 'slams.R', sep = ''))
-
+source(paste(diRectoRy, 'full_season.R', sep = ''))
+source(paste(diRectoRy, 'full_season_grouped.R', sep = ''))
