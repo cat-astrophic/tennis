@@ -436,3 +436,73 @@ stargazer(mod2f, mod3f, mod4f, mod5f, mod6f, mod7f, mod8f, mod9f, type = 'text',
 stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod7f, submod8f, submod9f, type = 'text',
           se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse7f, subrse8f, subrse9f))
 
+# Summary statistics for data by gender after removing those who effectively did not make a choice
+
+stargazer(subdata, summary.stat = c('mean', 'sd', 'min', 'max'))
+stargazer(subdataf, summary.stat = c('mean', 'sd', 'min', 'max'))
+stargazer(subdatam, summary.stat = c('mean', 'sd', 'min', 'max'))
+
+stargazer(subdata, summary.stat = c('mean', 'sd', 'min', 'max'), type = 'text')
+stargazer(subdataf, summary.stat = c('mean', 'sd', 'min', 'max'), type = 'text')
+stargazer(subdatam, summary.stat = c('mean', 'sd', 'min', 'max'), type = 'text')
+
+# Average marginal effects from the logistic models
+
+mar1 <- margins(submod1)
+mar2 <- margins(submod2)
+mar3 <- margins(submod3)
+mar4 <- margins(submod4)
+mar5 <- margins(submod5)
+mar6 <- margins(submod6)
+mar7 <- margins(submod7)
+mar8 <- margins(submod8)
+mar9 <- margins(submod9)
+
+mar2f <- margins(submod2f)
+mar3f <- margins(submod3f)
+mar4f <- margins(submod4f)
+mar5f <- margins(submod5f)
+mar6f <- margins(submod6f)
+mar7f <- margins(submod7f)
+mar8f <- margins(submod8f)
+mar9f <- margins(submod9f)
+
+mar2m <- margins(submod2m)
+mar3m <- margins(submod3m)
+mar4m <- margins(submod4m)
+mar5m <- margins(submod5m)
+mar6m <- margins(submod6m)
+mar7m <- margins(submod7m)
+mar8m <- margins(submod8m)
+mar9m <- margins(submod9m)
+
+# t-statistics
+
+t1 <- submod1$coefficients / subrse1
+t2 <- submod2$coefficients / subrse2
+t3 <- submod3$coefficients / subrse3
+t4 <- submod4$coefficients / subrse4
+t5 <- submod5$coefficients / subrse5
+t6 <- submod6$coefficients / subrse6
+t7 <- submod7$coefficients / subrse7
+t8 <- submod8$coefficients / subrse8
+t9 <- submod9$coefficients / subrse9
+
+t2f <- submod2f$coefficients / subrse2f
+t3f <- submod3f$coefficients / subrse3f
+t4f <- submod4f$coefficients / subrse4f
+t5f <- submod5f$coefficients / subrse5f
+t6f <- submod6f$coefficients / subrse6f
+t7f <- submod7f$coefficients / subrse7f
+t8f <- submod8f$coefficients / subrse8f
+t9f <- submod9f$coefficients / subrse9f
+
+t2m <- submod2m$coefficients / subrse2m
+t3m <- submod3m$coefficients / subrse3m
+t4m <- submod4m$coefficients / subrse4m
+t5m <- submod5m$coefficients / subrse5m
+t6m <- submod6m$coefficients / subrse6m
+t7m <- submod7m$coefficients / subrse7m
+t8m <- submod8m$coefficients / subrse8m
+t9m <- submod9m$coefficients / subrse9m
+
