@@ -1,19 +1,20 @@
 # Main script for a paper on athletes, gender, and risk
 
-# Specifying the directory for the data  -- ensure that the directory is correct
+# Enter your username
 
-directory <- 'C:/Users/User/Documents/Data/tennis/'
+username <- ''
+
+# Specifying the directory forthe data  -- ensure that the directory is correct
+
+directory <- paste('C:/Users/', username, '/Documents/Data/tennis/', sep = '')
 
 # Running the individual scripts for each set of analyses -- ensure that the directory is correct
 
-diRectoRy <- 'C:/Users/User/Documents/'
+diRectoRy <- paste('C:/Users/', username, '/Documents/', sep = '')
 
 # Running the R scripts
 
-source(paste(diRectoRy, 'us_open.R', sep = ''))
-source(paste(diRectoRy, 'italian_open.R', sep = ''))
-source(paste(diRectoRy, 'french_open.R', sep = ''))
-source(paste(diRectoRy, 'slams.R', sep = ''))
-source(paste(diRectoRy, 'full_season.R', sep = ''))
-source(paste(diRectoRy, 'full_season_grouped.R', sep = ''))
-source(paste(diRectoRy, 'full_season_GR.R', sep = ''))
+source(paste(diRectoRy, 'tennis_main.R', sep = ''))
+source(paste(diRectoRy, 'tennis_sensitive.R', sep = ''))
+source(paste(diRectoRy, 'tennis_plots.R', sep = ''))
+
