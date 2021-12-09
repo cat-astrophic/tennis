@@ -461,7 +461,7 @@ omod5 <- lm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_2
 omod6 <- lm(Competed ~ factor(Gender) + Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
             + factor(Tournament)*factor(Country) + Prev_Tourn_Comp,
-            data = subdatat)
+            data = subdata)
 
 omod7 <- lm(Competed ~ factor(Gender) + Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
