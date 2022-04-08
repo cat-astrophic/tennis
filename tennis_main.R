@@ -54,6 +54,43 @@ data <- rbind(us,italian,french)
 
 data$Age2 <- data$Age*data$Age
 
+# Adding a continent of tournament variable to the data set
+
+TC <- c()
+
+for (i in 1:dim(data)[1]) {
+  
+  if (data$Tournament[i] == 'US') {TC <- c(TC, 'NorAm')}
+  else {TC <- c(TC, 'Euro')}
+  
+}
+
+data$T.Con <- TC
+
+# Adding a continent of country variable to the data set
+
+all.cons <- unique(data$Country)
+no.tourn.cons <- c('South Africa', 'Japan', 'Australia', 'Chinese Taipei', 'South Korea', 'India', 'Tunisia', 'China', 'Argentina', 'Chile', 'Brazil', 'Colombia', 'Ecuador')
+na.cons <- c('USA', 'Mexico', 'Canada', 'Puerto Rico')
+euro.con.ids <- !(all.cons %in% c(no.tourn.cons, na.cons))
+euro.cons <- all.cons[which(unlist(euro.con.ids))]
+
+PC <- c()
+
+for (i in 1:dim(data)[1]) {
+
+  if (data$Country[i] %in% euro.cons) {PC <- c(PC, 'Euro')}
+  else if (data$Country[i] %in% na.cons) {PC <- c(PC, 'NorAm')}
+  else {PC <- c(PC, 'Other')}
+  
+}
+
+data$P.Con <- PC
+
+# Adding an intercontinental travel variable to the data set
+
+data$travel <- 1 - as.numeric(data$T.Con == data$P.Con)
+
 # Dropping individuals who did not choose whether or not to participate, i.e., those who had COVID, an injury, or were suspended
 
 data <- data[which(data$COVID == 0),]
@@ -150,6 +187,13 @@ submod7 <- glm(Competed ~ factor(Gender) + Age + Age*Age + log(Winnings + 1) + l
                + factor(Tournament)*factor(Country) + Prev_Tourn_Comp + log(Followers),
                family = binomial(link = logit), data = subdata)
 
+# Model 8 is Model 6 + an international travel indicator
+
+submod8 <- glm(Competed ~ factor(Gender) + Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+               + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+               + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + travel,
+               family = binomial(link = logit), data = subdata)
+
 # Generating heteroskedasticity robust standard errors
 
 cov <- vcovHC(mod1, type = 'HC0')
@@ -194,18 +238,21 @@ subrse6 <- sqrt(abs(diag(cov)))
 cov <- vcovHC(submod7, type = 'HC0')
 subrse7 <- sqrt(abs(diag(cov)))
 
+cov <- vcovHC(submod8, type = 'HC0')
+subrse8 <- sqrt(abs(diag(cov)))
+
 # Viewing regression results and saving to file
 
-write.csv(stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, type = 'text',
-                    se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7), omit = c('Country', 'Tournament')),
+write.csv(stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod8, submod7, type = 'text',
+                    se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse8, subrse7), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers.txt', sep = ''), row.names = FALSE)
 
-write.csv(stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7,
-                    se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7), omit = c('Country', 'Tournament')),
+write.csv(stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod8, submod7,
+                    se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse8, subrse7), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_tex.txt', sep = ''), row.names = FALSE)
 
-stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, type = 'text',
-          se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7), omit = c('Country', 'Tournament'))
+stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod8, submod7, type = 'text',
+          se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse8, subrse7), omit = c('Country', 'Tournament'))
 
 # Repeat all regressions for women and men only
 
@@ -253,14 +300,19 @@ submod4m <- glm(Competed ~ Age + log(Winnings_20 + 1), family = binomial(link = 
 
 submod5m <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1), family = binomial(link = logit), data = subdatam)
 
-submod6m <- glm(Competed ~ Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+submod6m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
                 + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
                 + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + factor(Country),
                 family = binomial(link = logit), data = subdatam)
 
-submod7m <- glm(Competed ~ Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+submod7m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
                 + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
                 + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + factor(Country) + log(Followers),
+                family = binomial(link = logit), data = subdatam)
+
+submod8m <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
+                + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+                + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + travel,
                 family = binomial(link = logit), data = subdatam)
 
 submod2f <- glm(Competed ~ Age, family = binomial(link = logit), data = subdataf)
@@ -271,14 +323,19 @@ submod4f <- glm(Competed ~ Age + log(Winnings_20 + 1), family = binomial(link = 
 
 submod5f <- glm(Competed ~ Age + log(Winnings + 1) + log(Winnings_20 + 1), family = binomial(link = logit), data = subdataf)
 
-submod6f <- glm(Competed ~ Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+submod6f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
                 + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
                 + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + factor(Country),
                 family = binomial(link = logit), data = subdataf)
 
-submod7f <- glm(Competed ~ Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+submod7f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
                 + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
                 + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + factor(Country) + log(Followers),
+                family = binomial(link = logit), data = subdataf)
+
+submod8f <- glm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
+                + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+                + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + travel,
                 family = binomial(link = logit), data = subdataf)
 
 # Generating  heteroskedasticity robust standard errors
@@ -337,6 +394,9 @@ subrse6m <- sqrt(abs(diag(cov)))
 cov <- vcovHC(submod7m, type = 'HC0')
 subrse7m <- sqrt(abs(diag(cov)))
 
+cov <- vcovHC(submod8m, type = 'HC0')
+subrse8m <- sqrt(abs(diag(cov)))
+
 cov <- vcovHC(submod2f, type = 'HC0')
 subrse2f <- sqrt(abs(diag(cov)))
 
@@ -355,32 +415,35 @@ subrse6f <- sqrt(abs(diag(cov)))
 cov <- vcovHC(submod7f, type = 'HC0')
 subrse7f <- sqrt(abs(diag(cov)))
 
+cov <- vcovHC(submod8f, type = 'HC0')
+subrse8f <- sqrt(abs(diag(cov)))
+
 # Writing results to file
 
-write.csv(stargazer(submod2m, submod3m, submod4m, submod5m, submod6m, submod7m, type = 'text',
-                    se = list(subrse2m, subrse3m, subrse4m, subrse5m, subrse6m, subrse7), omit = c('Country', 'Tournament')),
+write.csv(stargazer(submod2m, submod3m, submod4m, submod5m, submod6m, submod8m, submod7m, type = 'text',
+                    se = list(subrse2m, subrse3m, subrse4m, subrse5m, subrse6m, subrse8m, subrse7m), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_M.txt', sep = ''), row.names = FALSE)
 
-write.csv(stargazer(submod2m, submod3m, submod4m, submod5m, submod6m, submod7m,
-                    se = list(subrse2m, subrse3m, subrse4m, subrse5m, subrse6m, subrse7m), omit = c('Country', 'Tournament')),
+write.csv(stargazer(submod2m, submod3m, submod4m, submod5m, submod6m, submod8m, submod7m,
+                    se = list(subrse2m, subrse3m, subrse4m, subrse5m, subrse6m, subrse8m, subrse7m), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_M_tex.txt', sep = ''), row.names = FALSE)
 
-write.csv(stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod7f, type = 'text',
-                    se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse7f), omit = c('Country', 'Tournament')),
+write.csv(stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod8f, submod7f, type = 'text',
+                    se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse8f, subrse7f), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_F.txt', sep = ''), row.names = FALSE)
 
-write.csv(stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod7f,                    
-                    se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse7f), omit = c('Country', 'Tournament')),
+write.csv(stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod8f, submod7f,                    
+                    se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse8f, subrse7f), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_F_tex.txt', sep = ''), row.names = FALSE)
 
-stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod7, type = 'text',
-          se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse7), omit = c('Country', 'Tournament'))
+stargazer(submod1, submod2, submod3, submod4, submod5, submod6, submod8, submod7, type = 'text',
+          se = list(subrse1, subrse2, subrse3, subrse4, subrse5, subrse6, subrse8, subrse7), omit = c('Country', 'Tournament'))
 
-stargazer(submod2m, submod3m, submod4m, submod5m, submod6m, submod7m, type = 'text',
-          se = list(subrse2m, subrse3m, subrse4m, subrse5m, subrse6m, subrse7m), omit = c('Country', 'Tournament'))
+stargazer(submod2m, submod3m, submod4m, submod5m, submod6m, submod8m, submod7m, type = 'text',
+          se = list(subrse2m, subrse3m, subrse4m, subrse5m, subrse6m, subrse8m, subrse7m), omit = c('Country', 'Tournament'))
 
-stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod7f, type = 'text',
-          se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse7f), omit = c('Country', 'Tournament'))
+stargazer(submod2f, submod3f, submod4f, submod5f, submod6f, submod8f, submod7f, type = 'text',
+          se = list(subrse2f, subrse3f, subrse4f, subrse5f, subrse6f, subrse8f, subrse7f), omit = c('Country', 'Tournament'))
 
 # Summary statistics for data by gender after removing those who effectively did not make a choice
 
@@ -400,18 +463,24 @@ mar3 <- margins(submod3)
 mar4 <- margins(submod4)
 mar5 <- margins(submod5)
 mar6 <- margins(submod6)
+mar7 <- margins(submod7)
+mar8 <- margins(submod8)
 
 mar2f <- margins(submod2f)
 mar3f <- margins(submod3f)
 mar4f <- margins(submod4f)
 mar5f <- margins(submod5f)
 mar6f <- margins(submod6f)
+mar7f <- margins(submod7f)
+mar8f <- margins(submod8f)
 
 mar2m <- margins(submod2m)
 mar3m <- margins(submod3m)
 mar4m <- margins(submod4m)
 mar5m <- margins(submod5m)
 mar6m <- margins(submod6m)
+mar7m <- margins(submod7m)
+mar8m <- margins(submod8m)
 
 # t-statistics
 
@@ -421,18 +490,24 @@ t3 <- submod3$coefficients / subrse3
 t4 <- submod4$coefficients / subrse4
 t5 <- submod5$coefficients / subrse5
 t6 <- submod6$coefficients / subrse6
+t7 <- submod7$coefficients / subrse7
+t8 <- submod8$coefficients / subrse8
 
 t2f <- submod2f$coefficients / subrse2f
 t3f <- submod3f$coefficients / subrse3f
 t4f <- submod4f$coefficients / subrse4f
 t5f <- submod5f$coefficients / subrse5f
 t6f <- submod6f$coefficients / subrse6f
+t7f <- submod7f$coefficients / subrse7f
+t8f <- submod8f$coefficients / subrse8f
 
 t2m <- submod2m$coefficients / subrse2m
 t3m <- submod3m$coefficients / subrse3m
 t4m <- submod4m$coefficients / subrse4m
 t5m <- submod5m$coefficients / subrse5m
 t6m <- submod6m$coefficients / subrse6m
+t7m <- submod7m$coefficients / subrse7m
+t8m <- submod8m$coefficients / subrse8m
 
 # OLS for reviewer
 
@@ -458,15 +533,20 @@ omod5 <- lm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_2
 
 # Model 6 is Model 5 + controls
 
-omod6 <- lm(Competed ~ factor(Gender) + Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+omod6 <- lm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1)
             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
             + factor(Tournament)*factor(Country) + Prev_Tourn_Comp,
             data = subdata)
 
-omod7 <- lm(Competed ~ factor(Gender) + Age + Age*Age + log(Winnings + 1) + log(Winnings_20 + 1)
+omod7 <- lm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1)
             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
             + factor(Tournament)*factor(Country) + Prev_Tourn_Comp + log(Followers),
             data = subdatat)
+
+omod8 <- lm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1)
+            + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+            + factor(Tournament) + Prev_Tourn_Comp + travel,
+            data = subdata)
 
 cov <- vcovHC(omod1, type = 'HC0')
 o1 <- sqrt(abs(diag(cov)))
@@ -489,6 +569,9 @@ o6 <- sqrt(abs(diag(cov)))
 cov <- vcovHC(omod7, type = 'HC0')
 o7 <- sqrt(abs(diag(cov)))
 
+cov <- vcovHC(omod8, type = 'HC0')
+o8 <- sqrt(abs(diag(cov)))
+
 omod2f <- lm(Competed ~ Age, data = subdataf)
 
 omod3f <- lm(Competed ~ Age + log(Winnings + 1), data = subdataf)
@@ -505,6 +588,11 @@ omod6f <- lm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
 omod7f <- lm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
              + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
              + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + log(Followers),
+             data = subdataf)
+
+omod8f <- lm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
+             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+             + factor(Tournament) + Prev_Tourn_Comp + travel,
              data = subdataf)
 
 cov <- vcovHC(omod2f, type = 'HC0')
@@ -525,6 +613,9 @@ o6f <- sqrt(abs(diag(cov)))
 cov <- vcovHC(omod7f, type = 'HC0')
 o7f <- sqrt(abs(diag(cov)))
 
+cov <- vcovHC(omod8f, type = 'HC0')
+o8f <- sqrt(abs(diag(cov)))
+
 omod2m <- lm(Competed ~ Age, data = subdatam)
 
 omod3m <- lm(Competed ~ Age + log(Winnings + 1), data = subdatam)
@@ -541,6 +632,11 @@ omod6m <- lm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
 omod7m <- lm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
              + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
              + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + log(Followers),
+             data = subdatam)
+
+omod8m <- lm(Competed ~ Age + Age2 + log(Winnings + 1) + log(Winnings_20 + 1)
+             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+             + factor(Tournament)+factor(Country) + Prev_Tourn_Comp + travel,
              data = subdatam)
 
 cov <- vcovHC(omod2m, type = 'HC0')
@@ -561,16 +657,19 @@ o6m <- sqrt(abs(diag(cov)))
 cov <- vcovHC(omod7m, type = 'HC0')
 o7m <- sqrt(abs(diag(cov)))
 
-write.csv(stargazer(omod1, omod2, omod3, omod4, omod5, omod6, omod7,
-                    se = list(o1, o2, o3, o4, o5, o6, o7), omit = c('Country', 'Tournament')),
+cov <- vcovHC(omod8m, type = 'HC0')
+o8m <- sqrt(abs(diag(cov)))
+
+write.csv(stargazer(omod1, omod2, omod3, omod4, omod5, omod6, omod7, omod8,
+                    se = list(o1, o2, o3, o4, o5, o6, o7, o8), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_OLS_tex.txt', sep = ''), row.names = FALSE)
 
-write.csv(stargazer(omod2m, omod3m, omod4m, omod5m, omod6m, omod7m,
-                    se = list(o2m, o3m, o4m, o5m, o6m, o7m), omit = c('Country', 'Tournament')),
+write.csv(stargazer(omod2m, omod3m, omod4m, omod5m, omod6m, omod8m, omod7m,
+                    se = list(o2m, o3m, o4m, o5m, o6m, o8m, o7m), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_M_OLS_tex.txt', sep = ''), row.names = FALSE)
 
-write.csv(stargazer(omod2f, omod3f, omod4f, omod5f, omod6f, omod7f,
-                    se = list(o2f, o3f, o4f, o5f, o6f, o7f), omit = c('Country', 'Tournament')),
+write.csv(stargazer(omod2f, omod3f, omod4f, omod5f, omod6f, omod8f, omod7f,
+                    se = list(o2f, o3f, o4f, o5f, o6f, o8f, o7f), omit = c('Country', 'Tournament')),
           paste(directory, 'results/main/results_lucky_full_season_w_followers_F_OLS_tex.txt', sep = ''), row.names = FALSE)
 
 # Creating fixed effects for AgeX groups
@@ -1137,7 +1236,7 @@ mar5f <- margins(fmod5)
 mar6f <- margins(fmod6)
 mar7f <- margins(fmod7)
 
-# Quick check for a reviewer - change line 1146 to subdatam for men as this currently runs for women
+# Quick check for a reviewer - change line 1245 to subdatam for men as this currently runs for women
 
 uss <- c()
 frenchies <- c()
