@@ -1262,13 +1262,15 @@ mar1x <- margins(xmod1)
 mar2x <- margins(xmod2)
 mar3x <- margins(xmod3)
 
-# Quick check for a reviewer - change line 1271 to subdatam for men as this currently runs for women
+# Quick check for a reviewer - change line 1273 to subdataf for women as this currently runs for men
 
 uss <- c()
 frenchies <- c()
+italians <- c()
 uc <- c()
 fc <- c()
-names <- unique(subdataf$Name)
+ic <- c()
+names <- unique(subdatam$Name)
 
 for (n in names) {
   
@@ -1288,6 +1290,13 @@ for (n in names) {
       
       frenchies <- c(frenchies, n)
       fc <- c(fc, tmp$Competed[i])
+      
+    }
+    
+    if (tmp$Tournament[i] == 'Italian') {
+      
+      italians <- c(italians, n)
+      ic <- c(ic, tmp$Competed[i])
       
     }
     
@@ -1382,6 +1391,239 @@ for (i in 1:length(frenchies)) {
   
 }
 
+all.three <- c()
+us.only <- c()
+it.only <- c()
+fr.only <- c()
+us.it <- c()
+us.fr <- c()
+it.fr <- c()
+no.three <- c()
+
+for (i in 1:length(uss)) {
+  
+  if (uc[i] == 1) {
+    
+    x <- which(frenchies == uss[i])
+    z <- which(italians == uss[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 1) {
+          
+          if (ic[z] == 1) {
+            
+            all.three <- c(all.three, uss[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(italians)) {
+  
+  if (ic[i] == 1) {
+    
+    x <- which(frenchies == italians[i])
+    z <- which(uss == italians[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 0) {
+          
+          if (uc[z] == 0) {
+            
+            it.only <- c(it.only, italians[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(frenchies)) {
+  
+  if (fc[i] == 1) {
+    
+    x <- which(uss == frenchies[i])
+    z <- which(italians == frenchies[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (uc[x] == 0) {
+          
+          if (ic[z] == 0) {
+            
+            fr.only <- c(fr.only, frenchies[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(uss)) {
+  
+  if (uc[i] == 1) {
+    
+    x <- which(frenchies == uss[i])
+    z <- which(italians == uss[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 1) {
+          
+          if (ic[z] == 0) {
+            
+            us.fr <- c(us.fr, uss[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(uss)) {
+  
+  if (uc[i] == 1) {
+    
+    x <- which(frenchies == uss[i])
+    z <- which(italians == uss[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 1) {
+          
+          if (ic[z] == 0) {
+            
+            us.fr <- c(us.fr, uss[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(uss)) {
+  
+  if (uc[i] == 1) {
+    
+    x <- which(frenchies == uss[i])
+    z <- which(italians == uss[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 0) {
+          
+          if (ic[z] == 1) {
+            
+            us.fr <- c(us.fr, uss[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(italians)) {
+  
+  if (ic[i] == 1) {
+    
+    x <- which(uss == italians[i])
+    z <- which(italians == italians[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 1) {
+          
+          if (uc[z] == 0) {
+            
+            it.fr <- c(it.fr, uss[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
+for (i in 1:length(uss)) {
+  
+  if (uc[i] == 0) {
+    
+    x <- which(frenchies == uss[i])
+    z <- which(italians == uss[i])
+    
+    if (length(x) > 0) {
+      
+      if (length(z) > 0) {
+        
+        if (fc[x] == 0) {
+          
+          if (ic[z] == 0) {
+            
+            no.three <- c(no.three, uss[i])
+          }
+          
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+}
+
 # Creating a time series plot for covid cases in the three nations
 
 ggplot(covidts, aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million)) +
@@ -1393,9 +1635,9 @@ ggplot(covidts, aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_mi
   geom_point(data = covidts[covidts$location == 'United States',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'United States')) +
   geom_point(data = covidts[covidts$location == 'Italy',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'Italy')) +
   geom_point(data = covidts[covidts$location == 'France',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'France')) +
-  geom_vline(xintercept = as.Date('8/31/2020', '%m/%d/%Y')) +
-  geom_vline(xintercept = as.Date('9/14/2020', '%m/%d/%Y')) +
-  geom_vline(xintercept = as.Date('9/27/2020', '%m/%d/%Y')) +
+  geom_vline(xintercept = as.Date('8/31/2020', '%m/%d/%Y'), color = 'Red', size = 1.5) +
+  geom_vline(xintercept = as.Date('9/14/2020', '%m/%d/%Y'), color = 'Green', size = 1.5) +
+  geom_vline(xintercept = as.Date('9/27/2020', '%m/%d/%Y'), color = 'Blue', size = 1.5) +
   scale_color_manual(name = 'Host Nations', breaks = c('United States', 'Italy', 'France'), values = c('United States' = 'Red', 'Italy' = 'Green', 'France' = 'Blue'))
 
 dev.copy(png, paste(directory, 'covidts.png', sep = ''))
