@@ -12,10 +12,9 @@ library(ggplot2)
 us <- read.csv(paste(directory, 'us.csv', sep = ''), fileEncoding = 'UTF-8-BOM')
 italian <- read.csv(paste(directory, 'italian.csv', sep = ''), fileEncoding = 'UTF-8-BOM')
 french <- read.csv(paste(directory, 'french.csv', sep = ''), fileEncoding = 'UTF-8-BOM')
+covidts <- read.csv(paste(directory, 'covid.csv', sep = ''), fileEncoding = 'UTF-8-BOM')
 
 # Renaming some columns to perform a union
-
-# NEED TO RENAME Current, etc., to "Current_Open"
 
 names(us)[names(us) == 'US_Open'] <- 'Current'
 names(us)[names(us) == 'US_Open_Bi'] <- 'Current_Bi'
@@ -1236,7 +1235,34 @@ mar5f <- margins(fmod5)
 mar6f <- margins(fmod6)
 mar7f <- margins(fmod7)
 
-# Quick check for a reviewer - change line 1245 to subdatam for men as this currently runs for women
+# Additional robustness check - drop one var for a reviewer
+
+xmod1 <- glm(Competed ~ factor(Gender), family = binomial(link = logit), data = subdata)
+
+xmod2 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1)
+             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi,
+             family = binomial(link = logit), data = subdata)
+
+xmod3 <- glm(Competed ~ factor(Gender) + Age + log(Winnings + 1) + log(Winnings_20 + 1)
+             + Doubles + Qualifier + Ranking_S + Titles + Majors_Bi + Current_Bi
+             + log(Followers), family = binomial(link = logit), data = subdata)
+
+cov <- vcovHC(xmod1, type = 'HC0')
+x1 <- sqrt(abs(diag(cov)))
+
+cov <- vcovHC(xmod2, type = 'HC0')
+x2 <- sqrt(abs(diag(cov)))
+
+cov <- vcovHC(xmod3, type = 'HC0')
+x3 <- sqrt(abs(diag(cov)))
+
+stargazer(xmod1, xmod2, xmod3, se = list(x1, x2, x3), type = 'text')
+
+mar1x <- margins(xmod1)
+mar2x <- margins(xmod2)
+mar3x <- margins(xmod3)
+
+# Quick check for a reviewer - change line 1271 to subdatam for men as this currently runs for women
 
 uss <- c()
 frenchies <- c()
@@ -1355,4 +1381,23 @@ for (i in 1:length(frenchies)) {
   }
   
 }
+
+# Creating a time series plot for covid cases in the three nations
+
+ggplot(covidts, aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million)) +
+  theme_bw() +
+  ggtitle('COVID Cases in Host Nations') +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylab('14-Day Mean New Cases per Million People') +
+  xlab('Date') +
+  geom_point(data = covidts[covidts$location == 'United States',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'United States')) +
+  geom_point(data = covidts[covidts$location == 'Italy',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'Italy')) +
+  geom_point(data = covidts[covidts$location == 'France',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'France')) +
+  geom_vline(xintercept = as.Date('8/31/2020', '%m/%d/%Y')) +
+  geom_vline(xintercept = as.Date('9/14/2020', '%m/%d/%Y')) +
+  geom_vline(xintercept = as.Date('9/27/2020', '%m/%d/%Y')) +
+  scale_color_manual(name = 'Host Nations', breaks = c('United States', 'Italy', 'France'), values = c('United States' = 'Red', 'Italy' = 'Green', 'France' = 'Blue'))
+
+dev.copy(png, paste(directory, 'covidts.png', sep = ''))
+dev.off
 
