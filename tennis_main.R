@@ -1635,6 +1635,9 @@ ggplot(covidts, aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_mi
   geom_point(data = covidts[covidts$location == 'United States',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'United States')) +
   geom_point(data = covidts[covidts$location == 'Italy',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'Italy')) +
   geom_point(data = covidts[covidts$location == 'France',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'France')) +
+  geom_line(data = covidts[covidts$location == 'United States',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'United States')) +
+  geom_line(data = covidts[covidts$location == 'Italy',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'Italy')) +
+  geom_line(data = covidts[covidts$location == 'France',], aes(x = as.Date(date, '%m/%d/%Y'), y = new_cases_smoothed_per_million, color = 'France')) +
   geom_vline(xintercept = as.Date('8/31/2020', '%m/%d/%Y'), color = 'Red', size = 1.5) +
   geom_vline(xintercept = as.Date('9/14/2020', '%m/%d/%Y'), color = 'Green', size = 1.5) +
   geom_vline(xintercept = as.Date('9/27/2020', '%m/%d/%Y'), color = 'Blue', size = 1.5) +
