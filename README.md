@@ -23,10 +23,10 @@ Cary, Michael, and Heather Stephens. "Gendered Consequences of COVID-19 Among Pr
 ### Bibtex:
 
 @article{cary2022gendered,
-  title={Gendered Consequences of COVID-19 Among Professional Tennis Players},
-  author={Cary, Michael and Stephens, Heather},
-  journal={Journal of Sports Economics},
-  pages={15270025221120591},
-  year={2022},
-  publisher={SAGE Publications Sage CA: Los Angeles, CA}
+&nbsp;&nbsp;&nbsp;&nbsp;title={Gendered Consequences of COVID-19 Among Professional Tennis Players},
+&nbsp;&nbsp;&nbsp;&nbsp;author={Cary, Michael and Stephens, Heather},
+&nbsp;&nbsp;&nbsp;&nbsp;journal={Journal of Sports Economics},
+&nbsp;&nbsp;&nbsp;&nbsp;pages={15270025221120591},
+&nbsp;&nbsp;&nbsp;&nbsp;year={2022},
+&nbsp;&nbsp;&nbsp;&nbsp;publisher={SAGE Publications Sage CA: Los Angeles, CA}
 }
