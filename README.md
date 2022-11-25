@@ -1,6 +1,6 @@
 # Gendered Consequences of COVID-19 Among Professional Tennis Players
 
-This repo contains the data and R code for an analysis of relative risk aversion differneces between female and male elite tennis players during the COVID-19 pandemic. The paper is published in the *Journal of Sports Economics*.
+This repo contains the data and R code for an analysis of relative risk aversion differneces between female and male elite tennis players during the COVID-19 pandemic. The paper is published in the [*Journal of Sports Economics*](https://journals.sagepub.com/doi/abs/10.1177/15270025221120591).
 
 ## Directions
 
