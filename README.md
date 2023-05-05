@@ -14,19 +14,22 @@ To run this:
 
 ### APA:
 
-Cary, M., & Stephens, H. (2022). Gendered Consequences of COVID-19 Among Professional Tennis Players. *Journal of Sports Economics*, 15270025221120591.
+Cary, M., & Stephens, H. (2023). Gendered Consequences of COVID-19 Among Professional Tennis Players. *Journal of Sports Economics*, 24(2), 241-266.
 
 ### MLA:
 
-Cary, Michael, and Heather Stephens. "Gendered Consequences of COVID-19 Among Professional Tennis Players." *Journal of Sports Economics* (2022): 15270025221120591.
+Cary, Michael, and Heather Stephens. "Gendered Consequences of COVID-19 Among Professional Tennis Players." Journal of Sports Economics 24.2 (2023): 241-266.
 
 ### Bibtex:
 
-@article{cary2022gendered,\
+@article{cary2023gendered,\
 &nbsp;&nbsp;&nbsp;&nbsp;title={Gendered Consequences of COVID-19 Among Professional Tennis Players},\
 &nbsp;&nbsp;&nbsp;&nbsp;author={Cary, Michael and Stephens, Heather},\
 &nbsp;&nbsp;&nbsp;&nbsp;journal={Journal of Sports Economics},\
-&nbsp;&nbsp;&nbsp;&nbsp;pages={15270025221120591},\
+&nbsp;&nbsp;&nbsp;&nbsp;volume={24},\
+&nbsp;&nbsp;&nbsp;&nbsp;number={2},\
+&nbsp;&nbsp;&nbsp;&nbsp;pages={241--266},\
 &nbsp;&nbsp;&nbsp;&nbsp;year={2022},\
 &nbsp;&nbsp;&nbsp;&nbsp;publisher={SAGE Publications Sage CA: Los Angeles, CA}\
 }
+
